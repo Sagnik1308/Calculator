@@ -10,15 +10,46 @@ function multiply(a,b){
 function divide(a,b){
     return a/b;
 }
-let x=5,y=3;
 function operate(operator,x,y){
     if (operator=='+'){
-        console.log(add(x,y));
+        return add(x,y);
     }else if (operator=='-'){
-        console.log(subtract(x,y));
+        return subtract(x,y);
     }else if (operator=='*'){
-        console.log(multiply(x,y));
+        return multiply(x,y);
     }else if (operator=='/'){
-        console.log(divide(x,y));
+        return divide(x,y);
     }
 }
+let display="",result=0,x=0,y=0,op='';
+const outWindow=document.querySelector('.outer-display');
+const innerWindow=document.querySelector('.inner-display');
+const btns=document.querySelectorAll('button');
+btns.forEach(btn=>btn.addEventListener('click',function evaluate(e){
+    const ch=e.target.value;
+    if (ch!='=') display+=ch;
+    outWindow.textContent=display;
+    if (ch>='0' && ch<='9'){
+        result+=parseInt(ch);
+        if (x==0){
+            x=result;
+        }else{
+            y=parseInt(ch);
+        }
+    }else if (ch=='='){
+        result=operate(op,x,y);
+        innerWindow.textContent=result;
+        x=result;
+        y=0;
+        result=0;
+    }else{
+        if (y!=0){
+            result=operate(op,x,y);
+            innerWindow.textContent=result;
+            x=result;
+            y=0;
+            result=0;
+        }
+        op=ch;
+    }
+}));

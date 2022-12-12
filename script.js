@@ -38,15 +38,16 @@ function operate(operator,x,y){
     }else if (operator=='/'){
         return divide(x,y);
     }else if (operator=='%'){
-        return modulo(a,b);
+        return modulo(x,y);
     }
 }
 let display="",op='',op1='',op2='';
 const outWindow=document.querySelector('.outer-display');
 const innerWindow=document.querySelector('.inner-display');
 const btns=document.querySelectorAll('button');
-btns.forEach(btn=>btn.addEventListener('click',function evaluate(e){
-    const ch=e.target.value;
+function evaluate(ch){
+    if (!(ch>='0' && ch<='9') && ch!='+' && ch!='-' && ch!='*' && ch!='/' && ch!='.' && ch!='%' && ch!='=' && ch!='C' && ch!='AC' && ch!='Backspace') return;
+    if (ch=='Backspace') ch='C';
     if (ch=='.' && op1==''){
         display='0.';
         op1='0';
@@ -70,7 +71,7 @@ btns.forEach(btn=>btn.addEventListener('click',function evaluate(e){
         op2='';
         op='';
     }else if (ch=='AC'){
-        display='0';
+        display='';
         op1='';
         op2='';
         op='';
@@ -84,22 +85,25 @@ btns.forEach(btn=>btn.addEventListener('click',function evaluate(e){
         }
     }else if (ch=='C'){
         if (op1!='' && op2=='' && op==''){
-            display='0';
+            display='';
             op1='';
             op2='';
             op='';
             innerWindow.textContent='';
+            outWindow.textContent='0';
         }else if (op2!=''){
             display=display.substring(0,display.length-1);
             op2=op2.substring(0,op2.length-1);
+            outWindow.textContent=display;
         }else if (op!=''){
             display=display.substring(0,display.length-1);
             op=op.substring(0,op.length-1);
+            outWindow.textContent=display;
         }else{
             display=display.substring(0,display.length-1);
             op1=op1.substring(0,op1.length-1);
+            outWindow.textContent=display;
         }
-        outWindow.textContent=display;
     }
     else{
         if (op2!=''){
@@ -109,4 +113,13 @@ btns.forEach(btn=>btn.addEventListener('click',function evaluate(e){
         }
         op=ch;
     }
+}
+btns.forEach(btn=>btn.addEventListener('click',(e)=>{
+    const ch=e.target.value;
+    evaluate(ch);
 }));
+window.addEventListener('keydown',(e)=>{
+    const ch=e.key;
+    console.log(ch);
+    evaluate(ch);
+});

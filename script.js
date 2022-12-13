@@ -84,7 +84,10 @@ function evaluate(ch){
             op2+=ch;
         }
     }else if (ch=='C'){
-        if (op1!='' && op2=='' && op==''){
+        if (op1==''){
+            outWindow.textContent='0';
+        }
+        else if (op1!='' && op2=='' && op==''){
             display='';
             op1='';
             op2='';
@@ -120,6 +123,5 @@ btns.forEach(btn=>btn.addEventListener('click',(e)=>{
 }));
 window.addEventListener('keydown',(e)=>{
     const ch=e.key;
-    console.log(ch);
     evaluate(ch);
 });
